@@ -1,36 +1,61 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <title>My Landing</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #111;
-            color: #fff;
-            text-align: center;
-        }
-        .container {
-            padding: 80px 20px;
-        }
-        a.button {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 12px 24px;
-            background: #fff;
-            color: #000;
-            text-decoration: none;
-            border-radius: 6px;
-        }
-    </style>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>Site</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <link rel="stylesheet" href="assets/css/prices.css" />
+
+
+    <link rel="preload" as="image" href="assets/images/bg.jpg" />
 </head>
+
 <body>
-<div class="container">
-    <h1>Заголовок</h1>
-    <p>Описание страницы</p>
-    <a class="button" href="https://t.me/yourlink">Связаться</a>
+<div class="bg" aria-hidden="true"></div>
+<div class="vignette" aria-hidden="true"></div>
+
+<div class="wrap">
+    <div class="shell">
+        <header class="topbar">
+            <nav class="nav">
+                <a class="nav__link" href="#home" data-route="home">Home</a>
+                <a class="nav__link" href="#prices" data-route="prices">Prices</a>
+                <a class="nav__link" href="#terms" data-route="terms">Terms</a>
+                <a class="nav__link" href="mailto:you@example.com">Email</a>
+            </nav>
+        </header>
+
+        <main id="app" class="card" role="main" aria-live="polite">
+            <noscript>
+                <div class="section">
+                    <h1 class="title">JavaScript отключён</h1>
+                    <p class="muted">
+                        Для работы навигации без перезагрузки нужен JavaScript.
+                        Откройте <a href="partials/home.html">home</a>,
+                        <a href="partials/prices.html">prices</a>,
+                        <a href="partials/terms.html">terms</a>.
+                    </p>
+                </div>
+            </noscript>
+
+            <div class="section">
+                <div class="kicker">Loading</div>
+                <h1 class="title">…</h1>
+                <div class="hr"></div>
+                <p class="muted">Content Loading.</p>
+            </div>
+        </main>
+
+    </div>
 </div>
+
+<script src="assets/js/router.js" defer></script>
 </body>
 </html>
