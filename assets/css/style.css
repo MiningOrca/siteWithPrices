@@ -37,7 +37,7 @@ body{
     margin: 0;
     font-family: var(--font-ui);
     color: var(--text);
-    background: #0f0f12;
+    background: #f3e1d2;
     overflow-x: hidden;
 }
 
@@ -45,21 +45,20 @@ body{
 .bg{
     position: fixed;
     pointer-events: none;
-    inset: -10px;
+    inset: 0;
     background:
-            linear-gradient(rgba(255, 180, 140, .15), rgba(255, 150, 120, .20)),
+            linear-gradient(rgba(255, 205, 170, .10), rgba(255, 170, 140, .12)),
             url("../images/bg.jpg") center/cover no-repeat;
-    filter: blur(4px) brightness(1.06);
+
+    filter: blur(3px) brightness(1.12) saturate(1.05);
     transform: scale(1.02);
-    /*z-index: -3;*/
 }
 
 .vignette{
     position: fixed;
     pointer-events: none;
     inset: 0;
-    background:
-            radial-gradient(1200px 900px at 50% 35%, rgba(0,0,0,.12), rgba(0,0,0,.55));
+    background: radial-gradient(1200px 900px at 50% 35%, rgba(0,0,0,.04), rgba(0,0,0,.22));
 }
 
 /* Layout */
