@@ -29,6 +29,8 @@
     --radius-sm: 18px;
 
     --maxw: 620px;
+    --topbar-height: 56px;
+    --topbar-gap: 36px;
 }
 
 *{ box-sizing: border-box; }
@@ -66,7 +68,7 @@ body{
     min-height: 100%;
     display: grid;
     place-items: center;
-    padding: 70px 16px 40px;
+    padding: calc(var(--topbar-height) + var(--topbar-gap)) 16px 40px;
 }
 .shell{
     width: min(var(--maxw), 100%);

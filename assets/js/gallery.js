@@ -1,7 +1,7 @@
 let state = {
     images: null,
     rendered: 0,
-    batch: 24,
+    batch: 10,
     scrollY: 0,
     observer: null,
     mounted: false,
