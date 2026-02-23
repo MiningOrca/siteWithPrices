@@ -25,6 +25,7 @@
 }
 
 .lightbox__stage{
+    touch-action: pan-y;
     position: relative;
     width: min(92vw, 980px);
     height: min(82vh, 760px);
@@ -42,6 +43,7 @@
     object-fit: contain;
     display: block;
     user-select: none;
+    touch-action: pan-y;
 }
 
 .lightbox__caption{

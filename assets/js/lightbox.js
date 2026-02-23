@@ -35,6 +35,7 @@
         const btnPrev = lb.querySelector("[data-lb-prev]");
         const btnNext = lb.querySelector("[data-lb-next]");
         const closeEls = lb.querySelectorAll("[data-lb-close]");
+        const stage = lb.querySelector(".lightbox__stage");
 
         let index = -1;
         let lastFocus = null;
@@ -83,7 +84,6 @@
         const next = () => { if (index >= 0) setIndex(index + 1); };
         const prev = () => { if (index >= 0) setIndex(index - 1); };
 
-        // cleanup for repeated route mounts
         if (lb.__lbCleanup) lb.__lbCleanup();
 
         const onDocClick = (e) => {
@@ -108,12 +108,121 @@
         btnPrev.onclick = (e) => { e.stopPropagation(); prev(); };
         closeEls.forEach((el) => el.onclick = (e) => { e.stopPropagation(); close(); });
 
+        let startX = 0, startY = 0, lastX = 0, lastY = 0;
+        let tracking = false, swipeDecided = false, preventScroll = false;
+
+        const SWIPE_MIN_X = 40;
+        const SWIPE_MAX_Y = 80;
+        const DECIDE_T = 8;
+
+        const resetSwipe = () => {
+            tracking = false;
+            swipeDecided = false;
+            preventScroll = false;
+        };
+
+        const onSwipeStart = (x, y) => {
+            if (!lb.classList.contains("is-open")) return;
+            tracking = true;
+            swipeDecided = false;
+            preventScroll = false;
+            startX = lastX = x;
+            startY = lastY = y;
+        };
+
+        const onSwipeMove = (x, y, e) => {
+            if (!tracking) return;
+
+            lastX = x;
+            lastY = y;
+
+            const dx = lastX - startX;
+            const dy = lastY - startY;
+
+            if (!swipeDecided) {
+                if (Math.abs(dx) >= DECIDE_T || Math.abs(dy) >= DECIDE_T) {
+                    swipeDecided = true;
+                    preventScroll = Math.abs(dx) > Math.abs(dy);
+                }
+            }
+
+            if (preventScroll) e.preventDefault?.();
+        };
+
+        const onSwipeEnd = () => {
+            if (!tracking) return;
+
+            const dx = lastX - startX;
+            const dy = lastY - startY;
+
+            if (Math.abs(dx) >= SWIPE_MIN_X && Math.abs(dy) <= SWIPE_MAX_Y) {
+                if (dx < 0) next();
+                else prev();
+            }
+
+            resetSwipe();
+        };
+
+        const supportsPointer = "PointerEvent" in window;
+
+        let peDown, peMove, peUp, peCancel;
+        let teStart, teMove, teEnd, teCancel;
+
+        if (supportsPointer) {
+            peDown = (e) => {
+                if (e.pointerType === "mouse") return;
+                onSwipeStart(e.clientX, e.clientY);
+            };
+            peMove = (e) => {
+                if (!tracking) return;
+                onSwipeMove(e.clientX, e.clientY, e);
+            };
+            peUp = () => onSwipeEnd();
+            peCancel = () => resetSwipe();
+
+            stage.addEventListener("pointerdown", peDown, { passive: true });
+            stage.addEventListener("pointermove", peMove, { passive: false });
+            stage.addEventListener("pointerup", peUp, { passive: true });
+            stage.addEventListener("pointercancel", peCancel, { passive: true });
+        } else {
+            teStart = (e) => {
+                const t = e.touches && e.touches[0];
+                if (!t) return;
+                onSwipeStart(t.clientX, t.clientY);
+            };
+            teMove = (e) => {
+                const t = e.touches && e.touches[0];
+                if (!t) return;
+                onSwipeMove(t.clientX, t.clientY, e);
+            };
+            teEnd = () => onSwipeEnd();
+            teCancel = () => resetSwipe();
+
+            stage.addEventListener("touchstart", teStart, { passive: true });
+            stage.addEventListener("touchmove", teMove, { passive: false });
+            stage.addEventListener("touchend", teEnd, { passive: true });
+            stage.addEventListener("touchcancel", teCancel, { passive: true });
+        }
+
         lb.__lbCleanup = () => {
             document.removeEventListener("click", onDocClick, true);
             window.removeEventListener("keydown", onKey);
             btnNext.onclick = null;
             btnPrev.onclick = null;
             closeEls.forEach((el) => el.onclick = null);
+
+            if (supportsPointer) {
+                if (peDown) stage.removeEventListener("pointerdown", peDown);
+                if (peMove) stage.removeEventListener("pointermove", peMove);
+                if (peUp) stage.removeEventListener("pointerup", peUp);
+                if (peCancel) stage.removeEventListener("pointercancel", peCancel);
+            } else {
+                if (teStart) stage.removeEventListener("touchstart", teStart);
+                if (teMove) stage.removeEventListener("touchmove", teMove);
+                if (teEnd) stage.removeEventListener("touchend", teEnd);
+                if (teCancel) stage.removeEventListener("touchcancel", teCancel);
+            }
+
             lb.__lbCleanup = null;
         };
     }
