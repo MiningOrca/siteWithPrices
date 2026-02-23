@@ -1,10 +1,10 @@
-// assets/js/app.js
-// SPA hash router + per-route init hooks (GitHub Pages friendly)
+import { mountGallery, unmountGallery } from "./gallery.js";
 
 const routes = {
     home: "partials/home.html",
     prices: "partials/prices.html",
     terms: "partials/terms.html",
+    gallery: "partials/gallery.html",
 };
 
 function getRouteFromHash() {
@@ -22,7 +22,6 @@ function setActiveNav(route) {
  * Loads a script only once (safe across route changes)
  */
 function loadScriptOnce(src) {
-    // already loaded
     if (document.querySelector(`script[data-dyn="${src}"]`)) return Promise.resolve();
 
     return new Promise((resolve, reject) => {
@@ -55,11 +54,21 @@ const routeInits = {
             console.warn("[router] Lightbox API not found. Check assets/js/lightbox.js");
         }
     },
+
+    gallery: async (app) => {
+        await mountGallery(app);
+    },
 };
+
+let currentRoute = null;
 
 async function loadRoute(route) {
     const url = routes[route];
     const app = document.getElementById("app");
+
+    if (currentRoute === "gallery" && route !== "gallery") {
+        unmountGallery();
+    }
 
     setActiveNav(route);
 
@@ -68,17 +77,17 @@ async function loadRoute(route) {
         if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
         const html = await res.text();
 
-        // Render partial
         app.innerHTML = html;
-
-        // Init route (post-render)
         const init = routeInits[route];
         if (typeof init === "function") {
             await init(app);
         }
+        currentRoute = route;
 
-        // Reset scroll
-        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+        // Reset scroll for all pages EXCEPT gallery (gallery restores its own scroll)
+        if (route !== "gallery") {
+            window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+        }
     } catch (e) {
         app.innerHTML = `
       <div class="section">

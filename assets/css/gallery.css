@@ -1,0 +1,16 @@
+.gallery-grid {
+    column-width: 220px;
+
+}
+
+.gallery-item {
+    break-inside: avoid;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
