@@ -52,18 +52,21 @@
 
 .block--sketch {
     position: absolute;
-    left: 10.772%;
+    left: 13.772%;
     top: 5.661%;
     width: 50.248%;
     gap:1.68em;
+    text-align: center;
 
 }
 
 .block--full-colour {
     position: absolute;
-    left: 66.376%;
+    left: 63.376%;
     top: 30.207%;
     width: 50.605%;
+    text-align: center;
+
 }
 
 .block--nsfw-block {
@@ -154,10 +157,6 @@
     width: 91.479%;
 }
 
-.block--addons{
-    font-family: var(--font-hand);
-}
-
 .block--addons .block__heading{
     font-size: 4.0cqw;
     letter-spacing: .10em;
@@ -187,7 +186,7 @@
 
 .block--addons .discord-copy{
     text-decoration:none;
-    color: var(--accent);
+    color: var(--muted2);
     margin-left:.3em;
     transition: opacity .15s ease;
     cursor:pointer;

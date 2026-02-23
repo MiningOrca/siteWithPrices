@@ -1,0 +1,99 @@
+/* Lightbox */
+.lightbox{
+    position: fixed;
+    inset: 0;
+    display: none;
+    z-index: 2000;
+}
+
+.lightbox.is-open{
+    display: block;
+}
+
+.lightbox__backdrop{
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,.65);
+}
+
+.lightbox__dialog{
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 20px;
+}
+
+.lightbox__stage{
+    position: relative;
+    width: min(92vw, 980px);
+    height: min(82vh, 760px);
+    border-radius: 18px;
+    overflow: hidden;
+    background: rgba(15,15,18,.65);
+    border: 1px solid rgba(255,255,255,.18);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.lightbox__img{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    user-select: none;
+}
+
+.lightbox__caption{
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 10px;
+    font-size: 12px;
+    letter-spacing: .08em;
+    color: rgba(255,255,255,.75);
+    text-transform: uppercase;
+    text-shadow: 0 1px 2px rgba(0,0,0,.5);
+    pointer-events: none;
+}
+
+.lightbox__btn{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 0;
+    background: rgba(255,255,255,.12);
+    color: rgba(255,255,255,.9);
+    width: 46px;
+    height: 46px;
+    border-radius: 999px;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    font-size: 28px;
+    line-height: 1;
+    transition: background .12s ease, transform .12s ease, opacity .12s ease;
+    user-select: none;
+}
+
+.lightbox__btn:hover{
+    background: rgba(255,255,255,.18);
+}
+
+.lightbox__btn--prev{ left: 18px; }
+.lightbox__btn--next{ right: 18px; }
+
+.lightbox__btn--close{
+    top: 26px;
+    right: 26px;
+    transform: none;
+    font-size: 30px;
+    width: 44px;
+    height: 44px;
+}
+
+/* optional: hide arrows on very small screens */
+@media (max-width: 520px){
+    .lightbox__btn--prev,
+    .lightbox__btn--next{ width: 42px; height: 42px; font-size: 26px; }
+}
